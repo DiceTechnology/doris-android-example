@@ -10,6 +10,13 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url "https://jitpack.io"
+            credentials { username authToken }
+        }
+        maven {
+            url "https://muxinc.jfrog.io/artifactory/default-maven-release-local"
+        }
     }
 }
 rootProject.name = "doris-android-example"

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">doris-android-example</string>
+    <!--Video URLs-->
+    <string name="hls_video_url">https://sample-videos-zyrkp2nj.s3-eu-west-1.amazonaws.com/big-buck-bunny/hls/master.m3u8</string>
+    <string name="dash_video_url">https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd</string>
+    <string name="mp4_video_url">https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4</string>
 </resources>
