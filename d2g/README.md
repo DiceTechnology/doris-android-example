@@ -1,5 +1,5 @@
 # Download To Go (D2G)
-The Download To Go feature allows you to download VODs and play it back offline. This module contains a working example of this feature.
+The Download To Go feature allows you to download VODs and play them back offline. This module contains a working example of this feature.
 
 ## Setup
 The following section describes how to setup the dependencies.
