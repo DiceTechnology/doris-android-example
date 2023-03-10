@@ -150,7 +150,7 @@ Observable<List<AssetData>> getDownloads(DownloadState state);
  */
 Observable<DownloadUpdateInfo> getDownloadsObservable();
 ```
-The `DownloadUpdateInfo` contains the id of the asset which belongs to, the current state and progress of the download.
+The `DownloadUpdateInfo` contains the id of the asset which belongs to, the current state and the progress of the download.
 #### Pause downloads
 ```java
 /**
