@@ -126,7 +126,7 @@ Observable<Ok> addDownload(
 Observable<List<AssetData>> getAllDownloads();
 
 /**
- * Returns the {@link AssetData} for specified download id.
+ * Returns the {@link AssetData} for the specified download id.
  *
  * @param id The download id.
  * @return Observable of {@link AssetData}.
