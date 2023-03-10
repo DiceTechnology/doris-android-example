@@ -84,7 +84,7 @@ void setup(
  * Set the API token that is required to renew License and request Media information.
  *
  * @param token    Actual API token.
- * @param callback that will be called if API token expired. 
+ * @param callback that will be called if the API token expired. 
                     You should provide a new token calling this method again.
  */
 void setToken(String token, Callback callback);
