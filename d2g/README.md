@@ -1,5 +1,5 @@
 # Download To Go (D2G)
-The Download To Go features allows you to download VODs and play it back offline. This module contains a working example of this feature.
+The Download To Go feature allows you to download VODs and play it back offline. This module contains a working example of this feature.
 
 ## Setup
 The following section describes how to setup the dependencies.
@@ -23,7 +23,8 @@ repositories {
     }
 }
 ```
-Add the following dependencies to the module level `build.gradle`:
+Add the following dependencies to the module level `build.gradle`.
+
 In case of latest `ExoDoris` version (2.2.13+), only the `ExoDoris` dependency needs to be added:
 ```groovy
 implementation "com.github.DiceTechnology.doris-android:doris:$dorisVersion"
@@ -66,8 +67,8 @@ The `DownloadProvider` encapsulates all the functionality of the D2G feature. As
  *
  * @param api      Url to API backend.
  * @param realm    The application realm.
- * @param key      The api-key.
- * @param deviceId The persisted ID of current device.
+ * @param key      The API-key.
+ * @param deviceId The persisted id of current device.
  * @param headers  Set default request headers.
  */
 void setup(
@@ -159,6 +160,7 @@ The `DownloadUpdateInfo` contains the id of the asset which belongs to, the curr
  * @return Observable<Ok>.
  */
 Observable<Ok> pauseDownload(String id);
+
 /**
  * Pause all unfinished downloads.
  *
@@ -196,6 +198,7 @@ Note. you need to subscribe to these actions to be executed, see `MainActivity.j
  * @return Observable<Ok>.
  */
 Observable<Ok> removeDownload(String id);
+
 /**
  * Cancel and remove all unfinished downloads.
  *
