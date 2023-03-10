@@ -38,13 +38,7 @@ import io.reactivex.schedulers.Schedulers;
 public class MainActivity extends FragmentActivity {
 
     private static final String TAG = MainActivity.class.getName();
-
-    private static final String BASE_URL = "https://dce-frontoffice.imggaming.com";
-    private static final String DEVICE_ID = "device-id";
-    private static final String REALM = "";
-    private static final String API_KEY = "";
-    private static final String AUTH_TOKEN = "";
-
+    
     private DownloadProvider downloadProvider;
     private AssetDataAdapter assetDataAdapter;
     private CompositeDisposable compositeDisposable;
@@ -87,8 +81,8 @@ public class MainActivity extends FragmentActivity {
     private void setupDownloadProvider() {
         downloadProvider = DownloadProviderImpl.getInstance(this);
         HashMap<String, String> headers = new HashMap<>(); // Additional headers, if needed.
-        downloadProvider.setup(BASE_URL, REALM, API_KEY, DEVICE_ID, headers);
-        downloadProvider.setToken(AUTH_TOKEN, () -> {
+        downloadProvider.setup(Config.BASE_URL, Config.REALM, Config.API_KEY, Config.DEVICE_ID, headers);
+        downloadProvider.setToken(Config.AUTH_TOKEN, () -> {
             Log.d(TAG, "Token expired");
             showError("Token expired");
             // TODO call setToken again with a valid token.
