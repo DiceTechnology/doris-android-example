@@ -63,7 +63,7 @@ The `DownloadProvider` encapsulates all the functionality of the D2G feature. As
 
 ```java
 /**
- * Initialize API keys that required to renew License.
+ * Initialize API keys that are required to renew License.
  *
  * @param api      Url to API backend.
  * @param realm    The application realm.
