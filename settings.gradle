@@ -20,4 +20,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "doris-android-example"
-include ':app'
+include ':d2g'

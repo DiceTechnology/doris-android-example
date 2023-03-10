@@ -1,3 +1,4 @@
 ext{
-    dorisVersion = '2.2.11'
+    dorisVersion = '2.2.13'
+    diceShieldVersion = '0.18.2' // Only needed if dorisVersion < 2.2.13
 }
