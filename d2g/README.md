@@ -81,7 +81,7 @@ void setup(
 
 ```java
 /**
- * Set API token that required to renew License and request Media information.
+ * Set the API token that is required to renew License and request Media information.
  *
  * @param token    Actual API token.
  * @param callback that will be called if API token expired. 
