@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">doris-android-example</string>
+    <string name="text_vod_id_hint">Enter VOD id</string>
+    <string name="text_download_button">Download</string>
+    <string name="text_empty_content">There is no downloaded content</string>
+</resources>
