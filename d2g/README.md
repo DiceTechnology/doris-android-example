@@ -85,7 +85,7 @@ void setup(
  *
  * @param token    Actual API token.
  * @param callback that will be called if API token expired. 
-                    You should provide new token calling this method again.
+                    You should provide a new token calling this method again.
  */
 void setToken(String token, Callback callback);
 ```
