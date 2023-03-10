@@ -59,7 +59,7 @@ API_KEY    = ""; // Your API key
 AUTH_TOKEN = ""; // Your authorization token
 ```
 #### DownloadProvider
-The `DownloadProvider` encapsulates all the functionality of the D2G feature. As a first step, we need to configure by calling `setup(..)` and `setToken(..)` on it. The `setToken` method has a callback which will be called whenever the token is expired, in this case we need to call `setToken` again with a valid token.
+The `DownloadProvider` encapsulates all the functionality of the D2G feature. As a first step, we need to configure it by calling `setup(..)` and `setToken(..)` on it. The `setToken` method has a callback which will be called whenever the token is expired, in this case, we need to call `setToken` again with a valid token.
 
 ```java
 /**
