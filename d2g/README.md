@@ -224,7 +224,7 @@ Observable<Ok> renewLicense(@NonNull String id);
 #### WiFi-only downloads
 ```java
 /**
- * Indicate that only WiFi networks should should be used for downloads.
+ * Indicate that only WiFi networks should be used for downloads.
  *
  * @param wiFiOnlyDownloads if set to true downloads will work on WiFi networks only.
  */
