@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "doris-android-example"
 include ':d2g'
+include ':chromecast'

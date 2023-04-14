@@ -16,4 +16,5 @@ authToken=...
 
 ### Core features
 * [Download To Go (D2G)](d2g/)
+* [Chromecast configuration](chromecast/)
 
