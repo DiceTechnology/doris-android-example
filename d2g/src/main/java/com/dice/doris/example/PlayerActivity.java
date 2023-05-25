@@ -40,7 +40,7 @@ public class PlayerActivity extends AppCompatActivity {
                 .setUri(videoItem.getUrl());
 
         Source source = new SourceBuilder()
-                .setMediaItem(mediaItemBuilder.build())
+                .setMediaItemBuilder(mediaItemBuilder)
                 .setId(videoItem.getId())
                 .setShouldPlayOffline(true)
                 .setDrmParams(new ActionToken(Utils.DRM_SCHEME, videoItem.getOfflineLicense()))
