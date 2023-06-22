@@ -80,6 +80,7 @@ public class MainActivity extends FragmentActivity {
 
     private void setupDownloadProvider() {
         downloadProvider = DownloadProviderImpl.getInstance(this);
+        downloadProvider.startService();
         HashMap<String, String> headers = new HashMap<>(); // Additional headers, if needed.
         downloadProvider.setup(Config.BASE_URL, Config.REALM, Config.API_KEY, Config.DEVICE_ID, headers);
         downloadProvider.setToken(Config.AUTH_TOKEN, () -> {
