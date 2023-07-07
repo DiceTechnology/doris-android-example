@@ -3,12 +3,13 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    namespace 'com.dice.doris.video'
+    compileSdk 33
 
     defaultConfig {
-        applicationId "com.dice.doris.d2g"
-        minSdk 23
-        targetSdk 32
+        applicationId "com.dice.doris.video"
+        minSdk 24
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -29,14 +30,10 @@ android {
 
 dependencies {
 
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     implementation "com.github.DiceTechnology.doris-android:doris:$dorisVersion"
     implementation "com.github.DiceTechnology.doris-android:doris-ui:$dorisVersion"
-
-    // RxJava
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
 }
