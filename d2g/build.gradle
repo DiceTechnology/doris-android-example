@@ -3,10 +3,10 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
-        applicationId "com.dice.doris.example"
+        applicationId "com.dice.doris.d2g"
         minSdk 23
         targetSdk 32
         versionCode 1
@@ -29,9 +29,9 @@ android {
 
 dependencies {
 
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.8.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
+    implementation "com.google.android.material:material:$androidxMaterialVersion"
+    implementation "androidx.constraintlayout:constraintlayout:$androidxConstraintLayoutVersion"
 
     implementation "com.github.DiceTechnology.doris-android:doris:$dorisVersion"
     implementation "com.github.DiceTechnology.doris-android:doris-ui:$dorisVersion"

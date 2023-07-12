@@ -1,3 +1,7 @@
 ext{
-    dorisVersion = '9ffc7771'
+    dorisVersion = '3.0.0'
+
+    androidxAppCompatVersion = '1.6.1'
+    androidxMaterialVersion = '1.9.0'
+    androidxConstraintLayoutVersion = '2.1.4'
 }
