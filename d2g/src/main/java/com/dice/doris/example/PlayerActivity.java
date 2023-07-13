@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.media3.common.MediaItem;
+import androidx.media3.exoplayer.util.EventLogger;
 
 import com.dice.shield.drm.entity.ActionToken;
 import com.dice.shield.drm.utils.Utils;
@@ -12,8 +14,6 @@ import com.diceplatform.doris.ExoDorisBuilder;
 import com.diceplatform.doris.entity.Source;
 import com.diceplatform.doris.entity.SourceBuilder;
 import com.diceplatform.doris.ui.ExoDorisPlayerView;
-import com.google.android.exoplayer2.MediaItem;
-import com.google.android.exoplayer2.util.EventLogger;
 
 public class PlayerActivity extends AppCompatActivity {
 

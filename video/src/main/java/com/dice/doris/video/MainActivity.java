@@ -1,24 +1,21 @@
 package com.dice.doris.video;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.media3.common.MediaItem;
+import androidx.media3.common.MimeTypes;
+import androidx.media3.common.util.Log;
+import androidx.media3.exoplayer.util.EventLogger;
 
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.dice.shield.drm.entity.ActionToken;
-import com.dice.shield.drm.utils.Utils;
 import com.diceplatform.doris.ExoDoris;
 import com.diceplatform.doris.ExoDorisBuilder;
 import com.diceplatform.doris.entity.Source;
 import com.diceplatform.doris.entity.SourceBuilder;
 import com.diceplatform.doris.ui.ExoDorisPlayerView;
-import com.google.android.exoplayer2.MediaItem;
-import com.google.android.exoplayer2.util.EventLogger;
-import com.google.android.exoplayer2.util.MimeTypes;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,6 +25,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Global configuration.
+        Log.setLogLevel(Log.LOG_LEVEL_ALL);
 
         player = new ExoDorisBuilder(this)
                 .setPlayWhenReady(true)
