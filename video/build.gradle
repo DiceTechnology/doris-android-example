@@ -31,9 +31,15 @@ android {
 dependencies {
 
     implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
-    implementation "com.google.android.material:material:$androidxMaterialVersion"
     implementation "androidx.constraintlayout:constraintlayout:$androidxConstraintLayoutVersion"
+    implementation "com.google.android.material:material:$androidxMaterialVersion"
 
-    implementation "com.github.DiceTechnology.doris-android:doris:$dorisVersion"
-    implementation "com.github.DiceTechnology.doris-android:doris-ui:$dorisVersion"
+    implementation("com.github.DiceTechnology.doris-android:doris:$dorisVersion") {
+        exclude group: 'com.github.DiceTechnology', module: 'dice-shield-android'
+        exclude group: 'androidx.media3'
+    }
+    implementation("com.github.DiceTechnology.doris-android:doris-ui:$dorisVersion") {
+        exclude group: 'com.github.DiceTechnology', module: 'dice-shield-android'
+        exclude group: 'androidx.media3'
+    }
 }

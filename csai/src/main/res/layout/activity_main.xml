@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="6dp">
+
+    <Button
+        android:id="@+id/get_auth_token"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:paddingLeft="12dp"
+        android:paddingTop="4dp"
+        android:paddingRight="12dp"
+        android:paddingBottom="4dp"
+        android:text="Get Auth Token"
+        android:textAllCaps="false"
+        android:textColor="#ffffff"
+        android:textSize="14dp"
+        tools:ignore="HardcodedText,SpUsage" />
+
+    <Button
+        android:id="@+id/get_video_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:paddingLeft="12dp"
+        android:paddingTop="4dp"
+        android:paddingRight="12dp"
+        android:paddingBottom="4dp"
+        android:text="Get Video Detail"
+        android:textAllCaps="false"
+        android:textColor="#ffffff"
+        android:textSize="14dp"
+        tools:ignore="HardcodedText,SpUsage" />
+
+    <Button
+        android:id="@+id/open_video_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:paddingLeft="12dp"
+        android:paddingTop="4dp"
+        android:paddingRight="12dp"
+        android:paddingBottom="4dp"
+        android:text="Open Video"
+        android:textAllCaps="false"
+        android:textColor="#ffffff"
+        android:textSize="14dp"
+        tools:ignore="HardcodedText,SpUsage" />
+
+</LinearLayout>

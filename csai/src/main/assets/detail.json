@@ -1,0 +1,46 @@
+{
+    "duration": 596,
+    "description": "Big Buck Bunny (code-named Project Peach) is a 2008 short computer-animated comedy film featuring animals of the forest, made by the Blender Institute, part of the Blender Foundation. Like the foundation's previous film, Elephants Dream, the film was made using Blender, a free and open-source software application for 3D computer modelling and animation developed by the same foundation. Unlike that earlier project, the tone and visuals departed from a cryptic story and dark visuals to one of comedy, cartoons, and light-heartedness.",
+    "title": "Big Buck Bunny - now with bif",
+    "categories": [
+        ""
+    ],
+    "contentDownload": {
+        "permission": "DISALLOWED"
+    },
+    "favourite": false,
+    "thumbnailUrl": "https://dve-images.imggaming.com/original/p/2023/01/23/hUzxrnICnOaTlEvr78ZdDPVb93KXQ75W-1674485082236.png",
+    "subEvents": [],
+    "longDescription": "Missing translation",
+    "coverUrl": "https://dve-images.imggaming.com/original/p/2019/07/16/hGGaqWssal4XtxcjLV63zHduBEprVHFd-1563290343433.jpg",
+    "offlinePlaybackLanguages": [],
+    "externalAssetId": "123456",
+    "maxHeight": 1080,
+    "id": 85158,
+    "accessLevel": "GRANTED",
+    "playerUrlCallback": "https://dve-api.imggaming.com/video/85158/playback?customerId=3&auth=709c6b8c39ed7ce7f724912df0ceab1983e5aba28fb3f2912cbb1b6570fe99f1&timestamp=1705657222797&ssai=0&uid=q7ynNn%7C4e6cee02-855d-450c-9988-2a1b933d7e55&dty=ANDROID_PHONE&realm=dce.sandbox&sId=a792e9e7-4c27-4b2f-b200-bfd0696e14e5",
+    "thumbnailsPreview": "https://dve-images.imggaming.com/original/p/2019/06/21/RspqRimkf0oNA0ZqOPU2RcCJvRu8eUeg-1561117825557/bif/preview_thumbnails.bif",
+    "adsConfiguration": {
+        "adUnits": [
+            {
+                "insertionType": "CSAI",
+                "adFormat": "VOD_VMAP",
+                "adTagUrl": "https://pubads.g.doubleclick.net/gampad/ads?iu=/22150989721/ssai_test_1&description_url=http%3A%2F%2Fendeavorstreaming.com&tfcd=0&npa=0&sz=400x300%7C640x480&gdfp_req=1&output=xml_vmap1&unviewed_position_start=1&env=vp&correlator=${RANDOM(10)}&ad_rule=1&cust_params=&vid_d=40000&allcues=0,20000,40000&deviceOs=2&deviceHeight=2560&deviceWidth=1440&deviceLang=zh&deviceDnt=1&deviceType=4&purchasedEntitlement=NOT_PURCHASED&domain=dice-web-staging.imggaming.com%2Frealm%2Fdce.sandbox&page=&mobile=&consentGdpr=0&consentCcpa=false&streamType=VOD&accontId=q7ynNn%7C4e6cee02-855d-450c-9988-2a1b933d7e55&licenceIds=&videoId=85158&videoLen=596&cuepoints=240000%2C300000&typedTags=ADGENRE%3Dsport%2Ctest+ad+genre%2Crabbit%26AdSupported%3DAdvertise&keys=ADGENRE%2CAdSupported&tags=fm1409%2CSport%2CCTR%2Csandboxguest%2Ctest+ad+genre%2Cade-test%2Crabbit&eventId=&startDate=&endDate=&npa=0&allowed=true&usp=&tcf=&law=&gdpr=0&ccpa=false&partitions=&cohort=brn%3Dbnu&postalCode=&leastSpecificDivision=&mostSpecificDivision=&city=ZZC&countryCode=HK&isGuest=false&device=ANDROID_PHONE&profileType=a&accountId=q7ynNn%7C4e6cee02-855d-450c-9988-2a1b933d7e55&ua=okhttp%2F4.12.0&osv=26&model=SM-G935U&make=samsung&ifa=&ver=1.0&storeid=com.dice.doris.csai&name=CSAI+Demo&bundle=com.dice.doris.csai&tournamentId="
+            }
+        ]
+    },
+    "displayableTags": [],
+    "plugins": [
+        {
+            "id": 532,
+            "name": "Automation Frameowork Plugin 1",
+            "type": "widget",
+            "subtype": "horizontal",
+            "payload": "{ key1: 'test json', key2: 9999 }",
+            "configuration": {}
+        }
+    ],
+    "watchStatus": "NOT_AVAILABLE",
+    "licences": [],
+    "type": "VOD"
+}
