@@ -7,15 +7,14 @@ object CsaiConfig {
     const val API_KEY = "4dc1e8df-5869-41ea-95c2-6f04c67459ed"
     const val CMP_TCF = ""
     const val CMP_USP = ""
-    private const val IS_LIVE = false
     private const val VOD_CONTENT_ID = "85158"
     private const val LIVE_CONTENT_ID = "111449"
 
-    val contentId: String
-        get() = if (IS_LIVE) LIVE_CONTENT_ID else VOD_CONTENT_ID
+    var isLive = false
+
     val videoUrl: String
         get() {
-            return if (IS_LIVE) {
+            return if (isLive) {
                 "${BASE_URL}/v4/event/${LIVE_CONTENT_ID}?includePlaybackDetails=URL&displayGeoblockedLive=false"
             } else {
                 "${BASE_URL}/v4/vod/${VOD_CONTENT_ID}?includePlaybackDetails=URL"

@@ -1,6 +1,7 @@
 package com.dice.doris.csai.player
 
 import android.os.Bundle
+import android.view.SurfaceView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.media3.common.util.Log
 import androidx.media3.exoplayer.util.EventLogger
@@ -31,9 +32,10 @@ class PlayerActivity : AppCompatActivity() {
             }
         } else if (source.imaCsaiProperties != null && source.imaCsaiProperties!!.midRollAdTagUri != null) {
             ExoDorisImaCsaiLiveBuilder(this).apply {
-//                setLiveAdSurfaceView(playerView.getsec)
+                //TODO: second surface view
+                setLiveAdSurfaceView(playerView.videoSurfaceView as SurfaceView)
                 setAdViewProvider(playerView)
-            } //TODO
+            }
         } else {
             ExoDorisBuilder(this)
         }

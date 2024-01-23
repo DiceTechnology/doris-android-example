@@ -1,6 +1,6 @@
 package com.dice.doris.csai.entity
 
-data class Playback(
+data class VodPlayback(
     val annotations: Annotations,
     val dash: List<Dash>,
     val hls: List<Hl>,
@@ -50,4 +50,32 @@ data class Subtitle(
 data class Display(
     val dimension: String,
     val percentage: Double
+)
+
+// live
+data class LivePlayback(
+    val epg: Epg,
+    val eventId: Int,
+    val hls: Hls,
+    val hlsUrl: String,
+    val posterUrl: String,
+    val startedAt: String,
+    val statusCode: Int,
+    val thirdPartyPlayback: List<Any>
+)
+
+data class Epg(
+    val localisations: List<Localisation>
+)
+
+data class Hls(
+    val containerType: String,
+    val url: String
+)
+
+data class Localisation(
+    val languageCode: String,
+    val name: String,
+    val updatedAt: String,
+    val url: String
 )
