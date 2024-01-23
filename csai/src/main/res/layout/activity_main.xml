@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,68 +10,34 @@
         android:id="@+id/toggle_is_live"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:paddingEnd="12dp"
         android:text="LIVE"
-        android:textSize="16dp"
+        android:textSize="12dp"
         android:textStyle="bold"
-        tools:ignore="HardcodedText,SpUsage" />
+        tools:ignore="HardcodedText,RtlSymmetry,SpUsage" />
 
     <Button
-        android:id="@+id/get_auth_token"
+        android:id="@+id/start_video"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
+        android:layout_gravity="start"
+        android:layout_marginTop="48dp"
         android:gravity="center"
         android:paddingLeft="12dp"
         android:paddingTop="4dp"
         android:paddingRight="12dp"
         android:paddingBottom="4dp"
-        android:text="Get Auth Token"
+        android:text="Start Video"
         android:textAllCaps="false"
-        android:textColor="#ffffff"
-        android:textSize="14dp"
+        android:textSize="12dp"
         tools:ignore="HardcodedText,SpUsage" />
 
-    <Button
-        android:id="@+id/get_video_btn"
+    <ProgressBar
+        android:id="@+id/progress"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:gravity="center"
-        android:paddingLeft="12dp"
-        android:paddingTop="4dp"
-        android:paddingRight="12dp"
-        android:paddingBottom="4dp"
-        android:text="Get Video Detail"
-        android:textAllCaps="false"
-        android:textColor="#ffffff"
-        android:textSize="14dp"
-        tools:ignore="HardcodedText,SpUsage" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="invisible" />
 
-    <Button
-        android:id="@+id/open_video_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:gravity="center"
-        android:paddingLeft="12dp"
-        android:paddingTop="4dp"
-        android:paddingRight="12dp"
-        android:paddingBottom="4dp"
-        android:text="Open Video"
-        android:textAllCaps="false"
-        android:textColor="#ffffff"
-        android:textSize="14dp"
-        tools:ignore="HardcodedText,SpUsage" />
-
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
-
-        <TextView
-            android:id="@+id/state_txt"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="10dp"
-            tools:ignore="SpUsage" />
-
-    </androidx.core.widget.NestedScrollView>
-
-</LinearLayout>
+</FrameLayout>
