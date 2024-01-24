@@ -13,7 +13,6 @@ import com.dice.doris.csai.entity.VideoInfo
 import com.dice.doris.csai.entity.VodDetail
 import com.dice.doris.csai.entity.VodPlayback
 import com.dice.doris.csai.util.OkHttpUtils.Callback
-import com.google.ads.interactivemedia.v3.internal.it
 import okhttp3.Request
 import java.util.Locale
 import kotlin.math.pow
@@ -32,7 +31,7 @@ object SourceUtils {
             }
 
             override fun onFailed(e: Exception) {
-                Toast.makeText(context, "get token failed.", Toast.LENGTH_SHORT).show()
+                context.showToast("get token failed.")
             }
         })
     }
@@ -51,9 +50,9 @@ object SourceUtils {
             .header(CsaiHeader.DVC_DNT, if (CsaiConfig.SHOULD_TRACK_USER) "0" else "1")
             .header(CsaiHeader.DVC_H, context.resources.displayMetrics.heightPixels.toString())
             .header(CsaiHeader.DVC_W, context.resources.displayMetrics.widthPixels.toString())
-            .header(CsaiHeader.DVC_LANG, Locale.getDefault().language)
+            .header(CsaiHeader.DVC_LANG, Locale.getDefault().language) // language
             .header(CsaiHeader.DVC_OS, "2") // 2:android
-            .header(CsaiHeader.DVC_OSV, Build.VERSION.SDK_INT.toString())
+            .header(CsaiHeader.DVC_OSV, Build.VERSION.SDK_INT.toString()) // OS version
             .header(CsaiHeader.DVC_TYPE, if (isPad(context)) "5" else "4") // 5:tablet, 4:phone
             .header(CsaiHeader.DVC_MAKE, Build.MANUFACTURER)
             .header(CsaiHeader.DVC_MODEL, Build.MODEL)
@@ -61,13 +60,13 @@ object SourceUtils {
             .header(CsaiHeader.CST_USP, CsaiConfig.CMP_USP) // CCPA us privacy string
             .build()
 
-        OkHttpUtils.getFeed(request, object : OkHttpUtils.Callback<VodDetail> {
+        OkHttpUtils.getFeed(request, object : Callback<VodDetail> {
             override fun onSuccess(result: VodDetail) {
                 getPlaybackUrl(context, result, callback)
             }
 
             override fun onFailed(e: Exception) {
-                Toast.makeText(context, "get video detail failed.", Toast.LENGTH_SHORT).show()
+                context.showToast("get video detail failed.")
             }
         })
     }
@@ -75,35 +74,43 @@ object SourceUtils {
     private fun getPlaybackUrl(context: Context, videoDetail: VodDetail, callback: SourceCallback) {
         if (videoDetail.playerUrlCallback != null) {
             if (CsaiConfig.isLive) {
-                OkHttpUtils.getFeed(videoDetail.playerUrlCallback, object : OkHttpUtils.Callback<LivePlayback> {
+                OkHttpUtils.getFeed(videoDetail.playerUrlCallback, object : Callback<LivePlayback> {
                     override fun onSuccess(result: LivePlayback) {
-                        val videoInfo = result.hls ?: result.dash ?: result.hlsUrl?.let { VideoInfo(null, it, null) }
+                        val videoInfo = parseSteam(result.hls?.let { listOf(it) }, result.dash?.let { listOf(it) })
                         videoInfo?.let {
                             callback.onSourceCallback(it, videoDetail.adsConfiguration)
                         }
                     }
 
                     override fun onFailed(e: Exception) {
-                        Toast.makeText(context, "get playback failed.", Toast.LENGTH_SHORT).show()
+                        context.showToast("get playback failed.")
                     }
                 })
             } else {
-                OkHttpUtils.getFeed(videoDetail.playerUrlCallback, object : OkHttpUtils.Callback<VodPlayback> {
+                OkHttpUtils.getFeed(videoDetail.playerUrlCallback, object : Callback<VodPlayback> {
                     override fun onSuccess(result: VodPlayback) {
-                        val videoInfo = result.hls.firstOrNull() ?: result.dash.firstOrNull()
+                        val videoInfo = parseSteam(result.hls, result.dash)
                         videoInfo?.let {
                             callback.onSourceCallback(it, videoDetail.adsConfiguration)
                         }
                     }
 
                     override fun onFailed(e: Exception) {
-                        Toast.makeText(context, "get playback failed.", Toast.LENGTH_SHORT).show()
+                        context.showToast("get playback failed.")
                     }
                 })
             }
         } else {
-            Toast.makeText(context, "get video detail playerUrlCallback is null.", Toast.LENGTH_SHORT).show()
+            context.showToast("get video detail playerUrlCallback is null.")
         }
+    }
+
+    private fun parseSteam(hls: List<VideoInfo>?, dash: List<VideoInfo>?): VideoInfo? {
+        val isDrm = hls?.find { it.drm != null } != null || dash?.find { it.drm != null } != null
+        if (isDrm) {
+            return hls?.find { it.drm?.keySystems?.contains("WIDEVINE") == true } ?: dash?.first()
+        }
+        return hls?.first()
     }
 
     private fun isPad(context: Context): Boolean {
@@ -116,4 +123,8 @@ object SourceUtils {
         val screenInches = sqrt(x + y) // screen size
         return screenInches >= 7.0
     }
+}
+
+private fun Context.showToast(msg: String) {
+    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }

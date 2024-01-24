@@ -1,5 +1,6 @@
 package com.dice.doris.csai.entity
 
+//TODO: sample code, the field can be null! please check!!!
 data class VodPlayback(
     val dash: List<VideoInfo>,
     val hls: List<VideoInfo>,

@@ -13,6 +13,7 @@ import com.dice.doris.csai.entity.AdsConfiguration
 import com.dice.doris.csai.entity.VideoInfo
 import com.dice.doris.csai.util.SourceUtils
 import com.dice.doris.csai.util.SourceUtils.SourceCallback
+import com.dice.shield.drm.entity.ActionToken
 import com.diceplatform.doris.ExoDoris
 import com.diceplatform.doris.ExoDorisBuilder
 import com.diceplatform.doris.entity.ImaCsaiProperties
@@ -42,7 +43,7 @@ class MainActivity : AppCompatActivity(), SourceCallback {
         val src = SourceBuilder()
             .setId(CsaiConfig.videoId)
             .setUrl(videoInfo.url)
-//                    .setDrmParams(videoInfo.drm?.let { drm -> ActionToken.fromJson(GsonUtils.gson.toJson(drm)) })
+            .setDrmParams(videoInfo.drm?.let { drm -> ActionToken(CsaiConfig.videoId, videoInfo.url, drm.url, drm.jwtToken, "widevine") })
             .setImaCsaiProperties(imaCsaiProperties)
             .setTextTracks(parseTextTrack(videoInfo))
             .build()
