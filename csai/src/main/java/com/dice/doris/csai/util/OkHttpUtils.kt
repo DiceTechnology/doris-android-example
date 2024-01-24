@@ -5,6 +5,8 @@ import android.os.Looper
 import com.dice.doris.csai.App
 import com.dice.doris.csai.CsaiConfig
 import com.dice.doris.csai.CsaiHeader
+import com.google.common.reflect.TypeToken
+import com.google.gson.Gson
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -37,7 +39,8 @@ object OkHttpUtils {
 
                 override fun onResponse(call: Call, response: Response) {
                     if (response.code == 200) {
-                        val result = response.body?.string()?.let { GsonUtils.fromJson<T>(it) }
+                        val data = response.body?.string()
+                        val result = data?.let { GsonUtils.fromJson<T>(it) }
                         if (result == null) {
                             mainHandler.post { callback.onFailed(java.lang.Exception("Parse Failed.")) }
                         } else {
@@ -83,5 +86,18 @@ object OkHttpUtils {
                     }
                 }
             })
+    }
+}
+
+object GsonUtils {
+    val gson = Gson()
+    inline fun <reified T> fromJson(json: String): T? {
+        return try {
+            val type = object : TypeToken<T>() {}.type
+            return gson.fromJson(json, type)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
     }
 }
