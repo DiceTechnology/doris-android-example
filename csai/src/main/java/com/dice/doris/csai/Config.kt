@@ -2,35 +2,22 @@ package com.dice.doris.csai
 
 
 object CsaiConfig {
-    const val AUTH_NAME = "" //TODO: try to get auth token
-    const val AUTH_PASSWORD = "" //TODO: try to get auth token
-    const val BASE_URL = "https://dce-frontoffice-stag.imggaming.com/api"
-    const val REALM = "dce.sandbox" // sample
-    const val API_KEY = "4dc1e8df-5869-41ea-95c2-6f04c67459ed" // android
-    const val CMP_TCF = ""  // GDPR TCF string
-    const val CMP_USP = ""  // CCPA us privacy string
-    const val SHOULD_TRACK_USER = false // like one trust track.
-    private const val VOD_DRM_CONTENT_ID = "141926" // sample id
-    private const val VOD_CONTENT_ID = "85158" // sample id
-    private const val LIVE_CONTENT_ID = "111449" // sample id
-    private const val LIVE_DRM_CONTENT_ID = "111449" // sample id
+    const val AUTH_NAME = "" // TODO: put username here
+    const val AUTH_PASSWORD = "" // TODO: put password here
+    const val BASE_URL = "" // TODO: put base url here
+    const val REALM = "" // TODO: put realm name here
+    const val API_KEY = "" // TODO: put api key here
 
-    var isDrm = true
-    var isLive = false
+    const val CMP_TCF = ""  // TODO: put GDPR TCF string from Consent Provider here
+    const val CMP_USP = ""  // TODO: put CCPA us privacy string from Consent Provider here
+    const val SHOULD_TRACK_USER = false // TODO: set Should track flag from Consent Provider or device here
 
-    val videoId: String
-        get() {
-            return if (isLive) LIVE_CONTENT_ID
-            else if (isDrm) VOD_DRM_CONTENT_ID
-            else VOD_CONTENT_ID
-        }
+    const val videoId = "85158"
+    const val isLive = false // VOD: false, Live: true
+
     val videoUrl: String
         get() {
-            return if (isLive) {
-                "${BASE_URL}/v4/event/${if (isDrm) LIVE_DRM_CONTENT_ID else LIVE_CONTENT_ID}?includePlaybackDetails=URL&displayGeoblockedLive=false"
-            } else {
-                "${BASE_URL}/v4/vod/${if (isDrm) VOD_DRM_CONTENT_ID else VOD_CONTENT_ID}?includePlaybackDetails=URL"
-            }
+            return "${BASE_URL}/api/v4/${if (isLive) "event" else "vod"}/${videoId}?includePlaybackDetails=URL"
         }
 }
 

@@ -1,3 +1,5 @@
+// TODO: sample code
+
 package com.dice.doris.csai.util
 
 import android.os.Handler
@@ -56,7 +58,7 @@ object OkHttpUtils {
 
     fun getToken(callback: Callback<String>) {
         val request = Request.Builder()
-            .url("${CsaiConfig.BASE_URL}/v2/login")
+            .url("${CsaiConfig.BASE_URL}/api/v2/login")
             .header(CsaiHeader.REALM, CsaiConfig.REALM)
             .header(CsaiHeader.API_KEY, CsaiConfig.API_KEY)
             .header(CsaiHeader.CONTENT_TYPE, "application/json")
