@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity(), SourceCallback {
         setContentView(R.layout.activity_main)
         // Global configuration.
         Log.setLogLevel(Log.LOG_LEVEL_ALL)
+        playerView.keepScreenOn = true
         playerView.setShowPreviousButton(false)
         playerView.setShowNextButton(false)
         playerView.setShowSubtitleButton(true)
