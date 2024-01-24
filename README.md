@@ -18,4 +18,5 @@ authToken=...
 * [Download To Go (D2G)](d2g/)
 * [Chromecast configuration](chromecast/)
 * [Video playback](video/)
+* [CSAI](csai/)
 

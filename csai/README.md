@@ -2,19 +2,6 @@
 The CSAI feature allows you to play dice streams with CSAI ads. And in order to get customized ads, parameters are needed to be passed to backend.
 This module contains a working example of this feature.
 
-### Setup
-In order to resolve the `ExoDoris` dependency, you need to add your jitpack token to `settings.gradle`:
-```
-maven {
-    url "https://jitpack.io"
-    credentials { username authToken }
-}
-```
-or add it to `$HOME/.gradle/gradle.properties`:
-```
-authToken=...
-```
-
 ### Dependencies
 ```groovy
 implementation("com.github.DiceTechnology.doris-android:doris:$dorisVersion") {
