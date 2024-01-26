@@ -12,7 +12,7 @@ object CsaiConfig {
     const val CMP_USP = ""  // TODO: put CCPA us privacy string from Consent Provider here
     const val SHOULD_TRACK_USER = false // TODO: set Should track flag from Consent Provider or device here
 
-    const val videoId = ""
+    const val videoId = "" // TODO: put video id here
     const val isLive = false // VOD: false, Live: true
 
     val videoUrl: String
