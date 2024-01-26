@@ -16,7 +16,9 @@ import com.dice.doris.csai.util.SourceUtils.SourceCallback
 import com.dice.shield.drm.entity.ActionToken
 import com.diceplatform.doris.ExoDoris
 import com.diceplatform.doris.ExoDorisBuilder
+import com.diceplatform.doris.entity.DorisAdEvent
 import com.diceplatform.doris.entity.ImaCsaiProperties
+import com.diceplatform.doris.entity.Source
 import com.diceplatform.doris.entity.SourceBuilder
 import com.diceplatform.doris.entity.TextTrack
 import com.diceplatform.doris.ext.imacsai.ExoDorisImaCsaiBuilder
@@ -26,7 +28,8 @@ import com.diceplatform.doris.ui.ExoDorisPlayerView
 class MainActivity : AppCompatActivity(), SourceCallback {
     private val progressBar: ProgressBar by lazy { findViewById(R.id.progress_bar) }
     private val playerView: ExoDorisPlayerView by lazy { findViewById(R.id.playerView) }
-    private var exoPlayer: ExoDoris? = null
+    private var player: ExoDoris? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -41,6 +44,7 @@ class MainActivity : AppCompatActivity(), SourceCallback {
 
     override fun onSourceCallback(videoInfo: VideoInfo, adsConfiguration: AdsConfiguration?) {
         val imaCsaiProperties = parseCsaiProperties(adsConfiguration)
+
         val src = SourceBuilder()
             .setId(CsaiConfig.videoId)
             .setUrl(videoInfo.url)
@@ -48,24 +52,28 @@ class MainActivity : AppCompatActivity(), SourceCallback {
             .setImaCsaiProperties(imaCsaiProperties)
             .setTextTracks(parseTextTrack(videoInfo))
             .build()
-        val player = createPlayer(imaCsaiProperties)
-        player.addAnalyticsListener(EventLogger())
-        player.addListener(object : Player.Listener {
+
+        player = createPlayer(Source.getAdType(src))
+
+        player?.addAnalyticsListener(EventLogger())
+
+        player?.addListener(object : Player.Listener {
             override fun onRenderedFirstFrame() {
                 progressBar.visibility = View.GONE
             }
         })
-        playerView.player = player.exoPlayer
-        player.load(src)
-        exoPlayer = player
+
+        playerView.player = player?.exoPlayer
+
+        player?.load(src)
     }
 
-    private fun createPlayer(imaCsaiProperties: ImaCsaiProperties?): ExoDoris {
-        val dorisBuilder = if (imaCsaiProperties?.preRollAdTagUri != null) {
+    private fun createPlayer(adType: DorisAdEvent.AdType): ExoDoris {
+        val builder = if (adType === DorisAdEvent.AdType.IMA_CSAI) {
             ExoDorisImaCsaiBuilder(this@MainActivity).apply {
                 setAdViewProvider(playerView)
             }
-        } else if (imaCsaiProperties?.midRollAdTagUri != null) {
+        } else if (adType === DorisAdEvent.AdType.IMA_CSAI_LIVE) {
             ExoDorisImaCsaiLiveBuilder(this@MainActivity).apply {
                 setLiveAdSurfaceView(playerView.videoSurfaceView as SurfaceView)
                 setAdViewProvider(playerView)
@@ -73,7 +81,7 @@ class MainActivity : AppCompatActivity(), SourceCallback {
         } else {
             ExoDorisBuilder(this@MainActivity)
         }
-        return dorisBuilder.setPlayWhenReady(true).build()
+        return builder.setPlayWhenReady(true).build()
     }
 
     private fun parseTextTrack(videoInfo: VideoInfo?): Array<TextTrack>? {
@@ -89,10 +97,10 @@ class MainActivity : AppCompatActivity(), SourceCallback {
         var preRollAdTagUri: Uri? = null
         var midRollAdTagUri: Uri? = null
         csaiAds.forEach {
-            val adType = it.adFormat
-            if ("PREROLL".equals(adType, ignoreCase = true) || "VOD_VMAP".equals(adType, ignoreCase = true)) {
+            val adFormat = it.adFormat
+            if ("PREROLL".equals(adFormat, ignoreCase = true) || "VOD_VMAP".equals(adFormat, ignoreCase = true)) {
                 preRollAdTagUri = Uri.parse(it.adTagUrl)
-            } else if ("MIDROLL".equals(adType, ignoreCase = true)) {
+            } else if ("MIDROLL".equals(adFormat, ignoreCase = true)) {
                 midRollAdTagUri = Uri.parse(it.adTagUrl)
             }
         }
@@ -101,11 +109,11 @@ class MainActivity : AppCompatActivity(), SourceCallback {
 
     override fun onPause() {
         super.onPause()
-        exoPlayer?.pause()
+        player?.pause()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        exoPlayer?.release()
+        player?.release()
     }
 }

@@ -4,7 +4,7 @@ package com.dice.doris.csai
 object CsaiConfig {
     const val AUTH_NAME = "" // TODO: put username here
     const val AUTH_PASSWORD = "" // TODO: put password here
-    const val BASE_URL = "" // TODO: put base url here
+    const val BASE_URL = "https://dce-frontoffice-stag.imggaming.com" // TODO: put base url here
     const val REALM = "" // TODO: put realm name here
     const val API_KEY = "" // TODO: put api key here
 

@@ -20,7 +20,7 @@ implementation("com.github.DiceTechnology.doris-android:extension-ima-csai-live:
 
 ### How to use it
 #### Configuration
-Add the proper values to these constants in `CsaiConfig.kt`:
+Add the proper values to these constants in `CsaiConfig`:
 ```kotlin
 const val AUTH_NAME = "" // TODO: put username here
 const val AUTH_PASSWORD = "" // TODO: put password here
@@ -85,24 +85,47 @@ Request.Builder()
     .build()
 ```
 
-#### 3. Get video stream feed from request of 'playerUrlCallback' in the returned video detail.
+#### 3. Get video stream feed from request of `playerUrlCallback` in the returned video detail.
+In the response of video detail request, there is a `playerUrlCallback` for actual playback url.
 
-#### 4. Get playback url
-Choose the stream in the response.
+- When request the `playerUrlCallback`, response will be `VodPlayback` or `LivePlayback` according to video type.
 
-#### 5. Parse `adsConfiguration` to get CSAI ad tag url.
-```kotlin
-val imaCsaiProperties = parseCsaiProperties(adsConfiguration)
+- Choose the streams in the response to get actual playback url
+```kotlin sample code
+private fun parseSteam(hls: List<VideoInfo>?, dash: List<VideoInfo>?): VideoInfo? {
+    val isDrm = hls?.find { it.drm != null } != null || dash?.find { it.drm != null } != null
+    if (isDrm) {
+        return hls?.find { it.drm?.keySystems?.contains("WIDEVINE") == true } ?: dash?.first()
+    }
+    return hls?.first()
+}
 ```
 
-#### 6. Create player
+#### 4. Parse `adsConfiguration` to get CSAI ad tag url.
+In the response of video detail request, there is `adsConfiguration` for CSAI ad tag url.
+
 ```kotlin
-val player = createPlayer(imaCsaiProperties)
+private fun parseCsaiProperties(adsConfiguration: AdsConfiguration?): ImaCsaiProperties? {
+    if (adsConfiguration == null || adsConfiguration.adUnits.isNullOrEmpty()) return null
+    val csaiAds = adsConfiguration.adUnits.filter { it.insertionType.equals("CSAI", ignoreCase = true) }
+    if (csaiAds.isEmpty()) return null
+    var preRollAdTagUri: Uri? = null
+    var midRollAdTagUri: Uri? = null
+    csaiAds.forEach {
+        val adType = it.adFormat
+        if ("PREROLL".equals(adType, ignoreCase = true) || "VOD_VMAP".equals(adType, ignoreCase = true)) {
+            preRollAdTagUri = Uri.parse(it.adTagUrl)
+        } else if ("MIDROLL".equals(adType, ignoreCase = true)) {
+            midRollAdTagUri = Uri.parse(it.adTagUrl)
+        }
+    }
+    return ImaCsaiProperties.from(preRollAdTagUri, midRollAdTagUri, null)
+}
 ```
 
-#### 7. init doris player and play
+#### 5. Create CSAI source
 ```kotlin
-val src = SourceBuilder()
+val source = SourceBuilder()
     .setId(CsaiConfig.videoId) // video id
     .setUrl(videoInfo.url) // video url
     .setDrmParams(videoInfo.drm?.let { drm -> ActionToken(CsaiConfig.videoId, videoInfo.url, drm.url, drm.jwtToken, "widevine") }) // drm config, you can get in the stream
@@ -110,7 +133,16 @@ val src = SourceBuilder()
     .setTextTracks(parseTextTrack(videoInfo)) // subtitles, you can in stream feed
     .build()
 
-player.setLisener(...)
+
+```
+
+#### 6. Initialize player and play
+```kotlin
+player = createPlayer(Source.getAdType(source))
+
+player?.addAnalyticsListener(EventLogger())
 ...
-player.load(src) // start video playback
+player?.addListener(...)
+...
+player?.load(source) // start video playback
 ```
