@@ -143,7 +143,7 @@ val source = SourceBuilder()
 ```
 
 #### Create player with CSAI source
-Two player views are use for live CSAI playback, so `secondaryPlayerView` need to  be created along with `playerView`.
+Two player views are used for live CSAI playback, so `secondaryPlayerView` need to  be created along with `playerView`.
 
 ```kotlin
     private fun createPlayer(adType: AdType): ExoDoris {
@@ -178,8 +178,6 @@ override fun onAdEvent(adEvent: DorisAdEvent) {
         when (adEvent.event) {
             DorisAdEvent.Event.AD_BREAK_STARTED -> playerView.hideController()
 
-            // Currently we use two player views for csai live playback because can not get SurfaceView.
-            // When our doris ui supports TV device and then we should not use two views.
             DorisAdEvent.Event.AD_BREAK_ENDED -> {
                 if (adEvent.details.adType == AdType.IMA_CSAI_LIVE) {
                     playerView.visibility = View.VISIBLE

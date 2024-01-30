@@ -71,8 +71,7 @@ class MainActivity : AppCompatActivity(), SourceCallback, DorisPlayerOutput {
                 setAdViewProvider(playerView)
             }
         } else if (adType === AdType.IMA_CSAI_LIVE) {
-            // Currently we use two player views for csai live playback because can not get SurfaceView.
-            // When our doris ui supports TV device and then we should not use two views.
+            // Two player views are used for live CSAI playback
             ExoDorisImaCsaiLiveBuilder(this@MainActivity).apply {
                 setAdViewProvider(secondaryPlayerView)
             }
@@ -109,8 +108,6 @@ class MainActivity : AppCompatActivity(), SourceCallback, DorisPlayerOutput {
         when (adEvent.event) {
             DorisAdEvent.Event.AD_BREAK_STARTED -> playerView.hideController()
 
-            // Currently we use two player views for csai live playback because can not get SurfaceView.
-            // When our doris ui supports TV device and then we should not use two views.
             DorisAdEvent.Event.AD_BREAK_ENDED -> {
                 if (adEvent.details.adType == AdType.IMA_CSAI_LIVE) {
                     playerView.visibility = View.VISIBLE
