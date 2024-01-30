@@ -38,7 +38,7 @@ Need to call login to get your auth token for following steps.
 
 #### Get video detail (sample code use okhttp client.)
 
-Your auto token is required to get video details.
+Your auth token is required to get video details.
 Following the guidelines for implementing Macro 2.0, all macros should be rendered server side. 
 
 So in order to get customized ads, parameters are needed to be passed to backend as headers. 
@@ -143,7 +143,7 @@ val source = SourceBuilder()
 ```
 
 #### Create player with CSAI source
-Two player views are used for live CSAI playback, so `secondaryPlayerView` need to  be created along with `playerView`.
+Two player views are used for live CSAI playback, so `secondaryPlayerView` need to be created along with `playerView`.
 
 ```kotlin
     private fun createPlayer(adType: AdType): ExoDoris {
