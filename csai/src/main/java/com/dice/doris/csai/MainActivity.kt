@@ -3,10 +3,8 @@ package com.dice.doris.csai
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.media3.common.AdViewProvider
-import androidx.media3.common.Player
 import androidx.media3.common.util.Log
 import androidx.media3.exoplayer.util.EventLogger
 import com.dice.doris.csai.entity.AdsConfiguration
@@ -29,7 +27,6 @@ import com.diceplatform.doris.ext.imacsailive.ExoDorisImaCsaiLivePlayer
 import com.diceplatform.doris.ui.ExoDorisPlayerView
 
 class MainActivity : AppCompatActivity(), SourceCallback, DorisPlayerOutput {
-    private val progressBar: ProgressBar by lazy { findViewById(R.id.progress_bar) }
     private val playerView: ExoDorisPlayerView by lazy { findViewById(R.id.playerView) }
     private val secondaryPlayerView: ExoDorisPlayerView by lazy { findViewById(R.id.secondaryPlayerView) }
     private var player: ExoDoris? = null
@@ -67,12 +64,6 @@ class MainActivity : AppCompatActivity(), SourceCallback, DorisPlayerOutput {
         player?.setDorisListener(this)
 
         player?.addAnalyticsListener(EventLogger())
-
-        player?.addListener(object : Player.Listener {
-            override fun onRenderedFirstFrame() {
-                progressBar.visibility = View.GONE
-            }
-        })
 
         playerView.player = player?.exoPlayer
 
