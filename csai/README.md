@@ -33,11 +33,17 @@ const val CMP_USP = ""  // TODO: put CCPA us privacy string from Consent Provide
 const val SHOULD_TRACK_USER = false // TODO: set Should track flag from Consent Provider or device here
 ```
 
-#### 1. Get your auth token first.
+#### Get your auth token first
+Need to call login to get your auth token for following steps.
 
-#### 2. Get video detail (sample code use okhttp client.)
+#### Get video detail (sample code use okhttp client.)
 
-- Client macros needed for customized ads:
+Your auth token is required to get video details.
+Following the guidelines for implementing Macro 2.0, all macros should be rendered server side. 
+
+So in order to get customized ads, parameters are needed to be passed to backend as headers. 
+
+Client macros needed for customized ads are listed as below:
 
 |**Header Name**  | **Parameter** |
 |--|--|
@@ -85,7 +91,7 @@ Request.Builder()
     .build()
 ```
 
-#### 3. Get video stream feed from request of `playerUrlCallback` in the returned video detail.
+#### Get video stream feed from request of `playerUrlCallback` in the returned video detail.
 In the response of video detail request, there is a `playerUrlCallback` for actual playback url.
 
 - When request the `playerUrlCallback`, response will be `VodPlayback` or `LivePlayback` according to video type.
@@ -101,7 +107,7 @@ private fun parseSteam(hls: List<VideoInfo>?, dash: List<VideoInfo>?): VideoInfo
 }
 ```
 
-#### 4. Parse `adsConfiguration` to get CSAI ad tag url.
+#### Parse `adsConfiguration` to get CSAI ad tag url.
 In the response of video detail request, there is `adsConfiguration` for CSAI ad tag url.
 
 ```kotlin
@@ -123,7 +129,7 @@ private fun parseCsaiProperties(adsConfiguration: AdsConfiguration?): ImaCsaiPro
 }
 ```
 
-#### 5. Create CSAI source
+#### Create CSAI source
 ```kotlin
 val source = SourceBuilder()
     .setId(CsaiConfig.videoId) // video id
@@ -136,13 +142,80 @@ val source = SourceBuilder()
 
 ```
 
-#### 6. Initialize player and play
+#### Create player with CSAI source
+Two player views are used for live CSAI playback, so `secondaryPlayerView` need to be created along with `playerView`.
+
+```kotlin
+    private fun createPlayer(adType: AdType): ExoDoris {
+        val builder = if (adType === AdType.IMA_CSAI) {
+            ExoDorisImaCsaiBuilder(this@MainActivity).apply {
+                setAdViewProvider(playerView)
+            }
+        } else if (adType === AdType.IMA_CSAI_LIVE) {
+            ExoDorisImaCsaiLiveBuilder(this@MainActivity).apply {
+                setAdViewProvider(secondaryPlayerView)
+            }
+        } else {
+            ExoDorisBuilder(this@MainActivity)
+        }
+        return builder.setPlayWhenReady(true).build()
+    }
+```
+
 ```kotlin
 player = createPlayer(Source.getAdType(source))
 
 player?.addAnalyticsListener(EventLogger())
-...
-player?.addListener(...)
-...
-player?.load(source) // start video playback
 ```
+
+#### Listen to CSAI ad events
+- Hide control bar whilst ad playing
+- Hide/show player view when ad break starts/ends
+- Show ad markers on control bar
+
+```kotlin
+override fun onAdEvent(adEvent: DorisAdEvent) {
+        when (adEvent.event) {
+            DorisAdEvent.Event.AD_BREAK_STARTED -> playerView.hideController()
+
+            DorisAdEvent.Event.AD_BREAK_ENDED -> {
+                if (adEvent.details.adType == AdType.IMA_CSAI_LIVE) {
+                    playerView.visibility = View.VISIBLE
+                    secondaryPlayerView.player = null
+                    secondaryPlayerView.visibility = View.GONE
+                }
+                playerView.showController()
+            }
+
+            DorisAdEvent.Event.AD_RESUMED ->
+                if (adEvent.details.adType == AdType.IMA_CSAI_LIVE) {
+                    secondaryPlayerView.visibility = View.VISIBLE
+                    playerView.visibility = View.GONE
+                }
+
+            DorisAdEvent.Event.AD_LOADING ->
+                if (adEvent.details.adType == AdType.IMA_CSAI_LIVE) {
+                    secondaryPlayerView.player = (player as ExoDorisImaCsaiLivePlayer).liveAdExoPlayer
+                }
+
+            // For the Google PlayerControlView it can get the ad markers from timeline for IMA CSAI stream.
+            DorisAdEvent.Event.AD_MARKERS_CHANGED ->
+                if (adEvent.details.adType != AdType.IMA_CSAI) {
+                    val adMarkers = adEvent.details.adMarkers
+                    playerView.setExtraAdGroupMarkers(
+                        adMarkers.adGroupTimesMs,
+                        adMarkers.playedAdGroups
+                    )
+                }
+
+            else -> {}
+        }
+    }
+```
+
+#### Start video playback
+```kotlin
+...
+player?.load(source)
+```
+
