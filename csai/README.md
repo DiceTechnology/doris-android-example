@@ -163,7 +163,8 @@ Two player views are used for live CSAI playback, so `secondaryPlayerView` need 
 ```
 
 ```kotlin
-player = createPlayer(Source.getAdType(source))
+val adType = Source.getAdType(source)
+player = createPlayer(adType)
 
 player?.addAnalyticsListener(EventLogger())
 ```
