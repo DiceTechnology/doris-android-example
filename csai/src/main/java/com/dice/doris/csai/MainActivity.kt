@@ -144,6 +144,7 @@ class MainActivity : AppCompatActivity(), SourceCallback, DorisPlayerOutput {
             else -> {}
         }
     }
+    
     override fun onPause() {
         super.onPause()
         player?.pause()
