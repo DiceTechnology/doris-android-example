@@ -2,10 +2,10 @@ package com.dice.doris.csai
 
 import android.net.Uri
 import android.os.Bundle
-import android.view.SurfaceView
 import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.media3.common.AdViewProvider
 import androidx.media3.common.Player
 import androidx.media3.common.util.Log
 import androidx.media3.exoplayer.util.EventLogger
@@ -14,20 +14,24 @@ import com.dice.doris.csai.entity.VideoInfo
 import com.dice.doris.csai.util.SourceUtils
 import com.dice.doris.csai.util.SourceUtils.SourceCallback
 import com.dice.shield.drm.entity.ActionToken
+import com.diceplatform.doris.DorisPlayerOutput
 import com.diceplatform.doris.ExoDoris
 import com.diceplatform.doris.ExoDorisBuilder
 import com.diceplatform.doris.entity.DorisAdEvent
+import com.diceplatform.doris.entity.DorisAdEvent.AdType
 import com.diceplatform.doris.entity.ImaCsaiProperties
 import com.diceplatform.doris.entity.Source
 import com.diceplatform.doris.entity.SourceBuilder
 import com.diceplatform.doris.entity.TextTrack
 import com.diceplatform.doris.ext.imacsai.ExoDorisImaCsaiBuilder
 import com.diceplatform.doris.ext.imacsailive.ExoDorisImaCsaiLiveBuilder
+import com.diceplatform.doris.ext.imacsailive.ExoDorisImaCsaiLivePlayer
 import com.diceplatform.doris.ui.ExoDorisPlayerView
 
-class MainActivity : AppCompatActivity(), SourceCallback {
+class MainActivity : AppCompatActivity(), SourceCallback, DorisPlayerOutput {
     private val progressBar: ProgressBar by lazy { findViewById(R.id.progress_bar) }
     private val playerView: ExoDorisPlayerView by lazy { findViewById(R.id.playerView) }
+    private val secondaryPlayerView: ExoDorisPlayerView by lazy { findViewById(R.id.secondaryPlayerView) }
     private var player: ExoDoris? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,13 +43,14 @@ class MainActivity : AppCompatActivity(), SourceCallback {
         playerView.setShowPreviousButton(false)
         playerView.setShowNextButton(false)
         playerView.setShowSubtitleButton(true)
+        secondaryPlayerView.keepScreenOn = true
         SourceUtils.getSource(this, this)
     }
 
     override fun onSourceCallback(videoInfo: VideoInfo, adsConfiguration: AdsConfiguration?) {
         val imaCsaiProperties = parseCsaiProperties(adsConfiguration)
 
-        val src = SourceBuilder()
+        val source = SourceBuilder()
             .setId(CsaiConfig.videoId)
             .setUrl(videoInfo.url)
             .setDrmParams(videoInfo.drm?.let { drm -> ActionToken(CsaiConfig.videoId, videoInfo.url, drm.url, drm.jwtToken, "widevine") })
@@ -53,7 +58,13 @@ class MainActivity : AppCompatActivity(), SourceCallback {
             .setTextTracks(parseTextTrack(videoInfo))
             .build()
 
-        player = createPlayer(Source.getAdType(src))
+        val adType = Source.getAdType(source)
+        // Currently we use two player views for csai live playback because can not get SurfaceView.
+        // When our doris ui supports TV device and then we should not use two views.
+        val adViewProvider: AdViewProvider =
+            if (adType == AdType.IMA_CSAI_LIVE) secondaryPlayerView else playerView
+        player = createPlayer(adType, adViewProvider)
+        player?.setDorisListener(this)
 
         player?.addAnalyticsListener(EventLogger())
 
@@ -65,18 +76,17 @@ class MainActivity : AppCompatActivity(), SourceCallback {
 
         playerView.player = player?.exoPlayer
 
-        player?.load(src)
+        player?.load(source)
     }
 
-    private fun createPlayer(adType: DorisAdEvent.AdType): ExoDoris {
-        val builder = if (adType === DorisAdEvent.AdType.IMA_CSAI) {
+    private fun createPlayer(adType: AdType, adViewProvider: AdViewProvider): ExoDoris {
+        val builder = if (adType === AdType.IMA_CSAI) {
             ExoDorisImaCsaiBuilder(this@MainActivity).apply {
-                setAdViewProvider(playerView)
+                setAdViewProvider(adViewProvider)
             }
-        } else if (adType === DorisAdEvent.AdType.IMA_CSAI_LIVE) {
+        } else if (adType === AdType.IMA_CSAI_LIVE) {
             ExoDorisImaCsaiLiveBuilder(this@MainActivity).apply {
-                setLiveAdSurfaceView(playerView.videoSurfaceView as SurfaceView)
-                setAdViewProvider(playerView)
+                setAdViewProvider(adViewProvider)
             }
         } else {
             ExoDorisBuilder(this@MainActivity)
@@ -107,6 +117,45 @@ class MainActivity : AppCompatActivity(), SourceCallback {
         return ImaCsaiProperties.from(preRollAdTagUri, midRollAdTagUri, null)
     }
 
+    override fun onAdEvent(adEvent: DorisAdEvent) {
+        when (adEvent.event) {
+            DorisAdEvent.Event.AD_BREAK_STARTED -> playerView.hideController()
+
+            // Currently we use two player views for csai live playback because can not get SurfaceView.
+            // When our doris ui supports TV device and then we should not use two views.
+            DorisAdEvent.Event.AD_BREAK_ENDED -> {
+                if (adEvent.details.adType == AdType.IMA_CSAI_LIVE) {
+                    playerView.visibility = View.VISIBLE
+                    secondaryPlayerView.player = null
+                    secondaryPlayerView.visibility = View.GONE
+                }
+                playerView.showController()
+            }
+
+            DorisAdEvent.Event.AD_RESUMED ->
+                if (adEvent.details.adType == AdType.IMA_CSAI_LIVE) {
+                    secondaryPlayerView.visibility = View.VISIBLE
+                    playerView.visibility = View.GONE
+                }
+
+            DorisAdEvent.Event.AD_LOADING ->
+                if (adEvent.details.adType == AdType.IMA_CSAI_LIVE) {
+                    secondaryPlayerView.player = (player as ExoDorisImaCsaiLivePlayer).liveAdExoPlayer
+                }
+
+            // For the Google PlayerControlView it can get the ad markers from timeline for IMA CSAI stream.
+            DorisAdEvent.Event.AD_MARKERS_CHANGED ->
+                if (adEvent.details.adType != AdType.IMA_CSAI) {
+                    val adMarkers = adEvent.details.adMarkers
+                    playerView.setExtraAdGroupMarkers(
+                        adMarkers.adGroupTimesMs,
+                        adMarkers.playedAdGroups
+                    )
+                }
+
+            else -> {}
+        }
+    }
     override fun onPause() {
         super.onPause()
         player?.pause()
