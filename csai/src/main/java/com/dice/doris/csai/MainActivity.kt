@@ -4,7 +4,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.media3.common.AdViewProvider
 import androidx.media3.common.util.Log
 import androidx.media3.exoplayer.util.EventLogger
 import com.dice.doris.csai.entity.AdsConfiguration
@@ -58,9 +57,7 @@ class MainActivity : AppCompatActivity(), SourceCallback, DorisPlayerOutput {
         val adType = Source.getAdType(source)
         // Currently we use two player views for csai live playback because can not get SurfaceView.
         // When our doris ui supports TV device and then we should not use two views.
-        val adViewProvider: AdViewProvider =
-            if (adType == AdType.IMA_CSAI_LIVE) secondaryPlayerView else playerView
-        player = createPlayer(adType, adViewProvider)
+        player = createPlayer(adType)
         player?.setDorisListener(this)
 
         player?.addAnalyticsListener(EventLogger())
@@ -70,14 +67,14 @@ class MainActivity : AppCompatActivity(), SourceCallback, DorisPlayerOutput {
         player?.load(source)
     }
 
-    private fun createPlayer(adType: AdType, adViewProvider: AdViewProvider): ExoDoris {
+    private fun createPlayer(adType: AdType): ExoDoris {
         val builder = if (adType === AdType.IMA_CSAI) {
             ExoDorisImaCsaiBuilder(this@MainActivity).apply {
-                setAdViewProvider(adViewProvider)
+                setAdViewProvider(playerView)
             }
         } else if (adType === AdType.IMA_CSAI_LIVE) {
             ExoDorisImaCsaiLiveBuilder(this@MainActivity).apply {
-                setAdViewProvider(adViewProvider)
+                setAdViewProvider(secondaryPlayerView)
             }
         } else {
             ExoDorisBuilder(this@MainActivity)
