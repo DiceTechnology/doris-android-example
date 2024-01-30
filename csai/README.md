@@ -176,42 +176,42 @@ player?.addAnalyticsListener(EventLogger())
 
 ```kotlin
 override fun onAdEvent(adEvent: DorisAdEvent) {
-        when (adEvent.event) {
-            DorisAdEvent.Event.AD_BREAK_STARTED -> playerView.hideController()
+    when (adEvent.event) {
+        DorisAdEvent.Event.AD_BREAK_STARTED -> playerView.hideController()
 
-            DorisAdEvent.Event.AD_BREAK_ENDED -> {
-                if (adEvent.details.adType == AdType.IMA_CSAI_LIVE) {
-                    playerView.visibility = View.VISIBLE
-                    secondaryPlayerView.player = null
-                    secondaryPlayerView.visibility = View.GONE
-                }
-                playerView.showController()
+        DorisAdEvent.Event.AD_BREAK_ENDED -> {
+            if (adEvent.details.adType == AdType.IMA_CSAI_LIVE) {
+                playerView.visibility = View.VISIBLE
+                secondaryPlayerView.player = null
+                secondaryPlayerView.visibility = View.GONE
+            }
+            playerView.showController()
+        }
+
+        DorisAdEvent.Event.AD_RESUMED ->
+            if (adEvent.details.adType == AdType.IMA_CSAI_LIVE) {
+                secondaryPlayerView.visibility = View.VISIBLE
+                playerView.visibility = View.GONE
             }
 
-            DorisAdEvent.Event.AD_RESUMED ->
-                if (adEvent.details.adType == AdType.IMA_CSAI_LIVE) {
-                    secondaryPlayerView.visibility = View.VISIBLE
-                    playerView.visibility = View.GONE
-                }
+        DorisAdEvent.Event.AD_LOADING ->
+            if (adEvent.details.adType == AdType.IMA_CSAI_LIVE) {
+                secondaryPlayerView.player = (player as ExoDorisImaCsaiLivePlayer).liveAdExoPlayer
+            }
 
-            DorisAdEvent.Event.AD_LOADING ->
-                if (adEvent.details.adType == AdType.IMA_CSAI_LIVE) {
-                    secondaryPlayerView.player = (player as ExoDorisImaCsaiLivePlayer).liveAdExoPlayer
-                }
+        // For the Google PlayerControlView it can get the ad markers from timeline for IMA CSAI stream.
+        DorisAdEvent.Event.AD_MARKERS_CHANGED ->
+            if (adEvent.details.adType != AdType.IMA_CSAI) {
+                val adMarkers = adEvent.details.adMarkers
+                playerView.setExtraAdGroupMarkers(
+                    adMarkers.adGroupTimesMs,
+                    adMarkers.playedAdGroups
+                )
+            }
 
-            // For the Google PlayerControlView it can get the ad markers from timeline for IMA CSAI stream.
-            DorisAdEvent.Event.AD_MARKERS_CHANGED ->
-                if (adEvent.details.adType != AdType.IMA_CSAI) {
-                    val adMarkers = adEvent.details.adMarkers
-                    playerView.setExtraAdGroupMarkers(
-                        adMarkers.adGroupTimesMs,
-                        adMarkers.playedAdGroups
-                    )
-                }
-
-            else -> {}
-        }
+        else -> {}
     }
+}
 ```
 
 #### Start video playback
