@@ -55,8 +55,6 @@ class MainActivity : AppCompatActivity(), SourceCallback, DorisPlayerOutput {
             .build()
 
         val adType = Source.getAdType(source)
-        // Currently we use two player views for csai live playback because can not get SurfaceView.
-        // When our doris ui supports TV device and then we should not use two views.
         player = createPlayer(adType)
         player?.setDorisListener(this)
 
@@ -73,6 +71,8 @@ class MainActivity : AppCompatActivity(), SourceCallback, DorisPlayerOutput {
                 setAdViewProvider(playerView)
             }
         } else if (adType === AdType.IMA_CSAI_LIVE) {
+            // Currently we use two player views for csai live playback because can not get SurfaceView.
+            // When our doris ui supports TV device and then we should not use two views.
             ExoDorisImaCsaiLiveBuilder(this@MainActivity).apply {
                 setAdViewProvider(secondaryPlayerView)
             }
@@ -144,7 +144,7 @@ class MainActivity : AppCompatActivity(), SourceCallback, DorisPlayerOutput {
             else -> {}
         }
     }
-    
+
     override fun onPause() {
         super.onPause()
         player?.pause()
