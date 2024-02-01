@@ -1,19 +1,18 @@
 plugins {
     id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
 }
 
 android {
-    namespace 'com.dice.doris.video'
+    namespace 'com.dice.doris.csai'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.dice.doris.video"
+        applicationId "com.dice.doris.csai"
         minSdk 24
         targetSdk 33
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -29,15 +28,21 @@ android {
 }
 
 dependencies {
-
-    implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
-    implementation "androidx.constraintlayout:constraintlayout:$androidxConstraintLayoutVersion"
+    implementation ("androidx.appcompat:appcompat:$androidxAppCompatVersion")
     implementation "com.google.android.material:material:$androidxMaterialVersion"
+
+    implementation 'com.google.code.gson:gson:2.10.1'
 
     implementation("com.github.DiceTechnology.doris-android:doris:$dorisVersion") {
         exclude group: 'androidx.media3'
     }
     implementation("com.github.DiceTechnology.doris-android:doris-ui:$dorisVersion") {
+        exclude group: 'androidx.media3'
+    }
+    implementation("com.github.DiceTechnology.doris-android:extension-ima-csai:$dorisVersion") {
+        exclude group: 'androidx.media3'
+    }
+    implementation("com.github.DiceTechnology.doris-android:extension-ima-csai-live:$dorisVersion") {
         exclude group: 'androidx.media3'
     }
 }
