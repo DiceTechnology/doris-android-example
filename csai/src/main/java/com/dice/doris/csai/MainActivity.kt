@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity(), SourceCallback, DorisPlayerOutput {
         player?.load(source)
     }
 
-    private fun createPlayer(adType: AdType): ExoDoris {
+    private fun createPlayer(adType: AdType?): ExoDoris {
         val builder = if (adType === AdType.IMA_CSAI) {
             ExoDorisImaCsaiBuilder(this@MainActivity).apply {
                 setAdViewProvider(playerView)
