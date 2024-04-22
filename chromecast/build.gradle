@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace 'com.dice.chromecast'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.dice.chromecast"
@@ -34,6 +34,5 @@ dependencies {
     implementation "com.google.android.material:material:$androidxMaterialVersion"
     implementation "androidx.constraintlayout:constraintlayout:$androidxConstraintLayoutVersion"
 
-    implementation 'com.google.android.gms:play-services-cast-framework:21.2.0'
-    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'com.google.android.gms:play-services-cast-framework:21.3.0'
 }
