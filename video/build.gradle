@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace 'com.dice.doris.video'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.dice.doris.video"
