@@ -3,6 +3,22 @@ The CSAI feature allows you to play dice streams with CSAI ads. And in order to 
 This module contains a working example of this feature.
 
 ### Dependencies
+**For version `3.12.0` and higher**
+```groovy
+implementation("com.endeavorstreaming.doris:doris:$dorisVersion") {
+    exclude group: 'androidx.media3'
+}
+implementation("com.endeavorstreaming.doris:doris-ui:$dorisVersion") {
+    exclude group: 'androidx.media3'
+}
+implementation("com.endeavorstreaming.doris:extension-ima-csai:$dorisVersion") {
+     exclude group: 'androidx.media3'
+}
+implementation("com.endeavorstreaming.doris:extension-ima-csai-live:$dorisVersion") {
+    exclude group: 'androidx.media3'
+}
+```
+**For older versions**
 ```groovy
 implementation("com.github.DiceTechnology.doris-android:doris:$dorisVersion") {
     exclude group: 'androidx.media3'

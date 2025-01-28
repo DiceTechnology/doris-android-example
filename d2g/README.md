@@ -9,7 +9,24 @@ Add the following permission to `AndroidManifest.xml`:
 <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 ```
 ### Dependencies
-Add the following repositories to the project level `build.gradle`:
+Add the following repositories to the project-level `build.gradle`:
+
+**For version `3.12.0` and higher**
+```groovy
+repositories {
+    google()
+    mavenCentral()
+    maven {
+        url("https://d1yvb7bfbv0w4t.cloudfront.net/")
+        credentials { username authToken }
+    }
+    maven {
+        url "https://muxinc.jfrog.io/artifactory/default-maven-release-local"
+    }
+}
+```
+
+**For older versions**
 ```groovy
 repositories {
     google()
@@ -23,14 +40,21 @@ repositories {
     }
 }
 ```
-Add the following dependencies to the module level `build.gradle`.
+Add the following dependencies to the module-level `build.gradle`.
 
-In case of latest `ExoDoris` version (2.2.13+), only the `ExoDoris` dependency needs to be added:
+**For version `3.12.0` and higher**
+```groovy
+implementation "com.endeavorstreaming.doris:doris:$dorisVersion"
+implementation "com.endeavorstreaming.doris:doris-ui:$dorisVersion"
+```
+
+**For version `2.2.13` and higher (< `3.12.0`)**
 ```groovy
 implementation "com.github.DiceTechnology.doris-android:doris:$dorisVersion"
 implementation "com.github.DiceTechnology.doris-android:doris-ui:$dorisVersion"
 ```
-For older `ExoDoris` versions, the `dice-shield-android` (0.18.2) also needs to be added:
+
+**For older versions (requires `dice-shield-android` `0.18.2`)**
 ```groovy
 implementation ("com.github.DiceTechnology.doris-android:doris:$dorisVersion") {
     exclude group: 'com.github.DiceTechnology', module: 'dice-shield-android'
