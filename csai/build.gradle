@@ -33,16 +33,16 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:2.10.1'
 
-    implementation("com.github.DiceTechnology.doris-android:doris:$dorisVersion") {
+    implementation("com.endeavorstreaming.doris:doris:$dorisVersion") {
         exclude group: 'androidx.media3'
     }
-    implementation("com.github.DiceTechnology.doris-android:doris-ui:$dorisVersion") {
+    implementation("com.endeavorstreaming.doris:doris-ui:$dorisVersion") {
         exclude group: 'androidx.media3'
     }
-    implementation("com.github.DiceTechnology.doris-android:extension-ima-csai:$dorisVersion") {
+    implementation("com.endeavorstreaming.doris:extension-ima-csai:$dorisVersion") {
         exclude group: 'androidx.media3'
     }
-    implementation("com.github.DiceTechnology.doris-android:extension-ima-csai-live:$dorisVersion") {
+    implementation("com.endeavorstreaming.doris:extension-ima-csai-live:$dorisVersion") {
         exclude group: 'androidx.media3'
     }
 }

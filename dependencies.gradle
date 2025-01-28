@@ -1,5 +1,5 @@
 ext{
-    dorisVersion = '3.9.2'
+    dorisVersion = '3.13.4'
 
     androidxAppCompatVersion = '1.6.1'
     androidxMaterialVersion = '1.9.0'
