@@ -19,6 +19,16 @@ repositories {
 }
 ```
 
+In module-level `build.gradle:`
+```groovy
+implementation("com.endeavorstreaming.doris:doris:$dorisVersion") {
+    exclude group: 'androidx.media3'
+}
+implementation("com.endeavorstreaming.doris:doris-ui:$dorisVersion") {
+    exclude group: 'androidx.media3'
+}
+```
+
 **For older versions**
 ```groovy
 repositories {
@@ -33,6 +43,16 @@ repositories {
     }
 }
 ```
+In module-level `build.gradle:`
+```groovy
+implementation("com.github.DiceTechnology.doris-android:doris:$dorisVersion") {
+    exclude group: 'androidx.media3'
+}
+implementation("com.github.DiceTechnology.doris-android:doris-ui:$dorisVersion") {
+    exclude group: 'androidx.media3'
+}
+```
+
 Add your **Jitpack token** (version < `3.12.0`), or **ES Maven token** (>= `3.12.0`) to `$HOME/.gradle/gradle.properties`:
 ```
 authToken=...
